@@ -15,57 +15,37 @@ jobs:
 
       - name: Update inno formula
         if: github.event.client_payload.formula == 'inno'
+        env:
+          VERSION: ${{ github.event.client_payload.version }}
+          MAC_ARM: ${{ github.event.client_payload.mac_arm_sha256 }}
+          MAC_X86: ${{ github.event.client_payload.mac_x86_sha256 }}
+          LINUX_ARM: ${{ github.event.client_payload.linux_arm_sha256 }}
+          LINUX_X86: ${{ github.event.client_payload.linux_x86_sha256 }}
         run: |
-          VERSION="${{ github.event.client_payload.version }}"
-          MAC_ARM="${{ github.event.client_payload.mac_arm_sha256 }}"
-          MAC_X86="${{ github.event.client_payload.mac_x86_sha256 }}"
-          LINUX_ARM="${{ github.event.client_payload.linux_arm_sha256 }}"
-          LINUX_X86="${{ github.event.client_payload.linux_x86_sha256 }}"
-
-          cat > Formula/inno.rb << 'FORMULA'
-          class Inno < Formula
-            desc "InnoDB file analysis toolkit for parsing, validating, and inspecting .ibd files"
-            homepage "https://github.com/ringo380/idb-utils"
-            license "MIT"
-          FORMULA
-
-          # Use sed for dynamic values
-          sed -i "s/FORMULA//" Formula/inno.rb
-          cat > Formula/inno.rb << EOF
-          class Inno < Formula
-            desc "InnoDB file analysis toolkit for parsing, validating, and inspecting .ibd files"
-            homepage "https://github.com/ringo380/idb-utils"
-            license "MIT"
-            version "${VERSION}"
-
-            if OS.mac?
-              if Hardware::CPU.arm?
-                url "https://github.com/ringo380/idb-utils/releases/download/v#{version}/inno-v#{version}-aarch64-apple-darwin.tar.gz"
-                sha256 "${MAC_ARM}"
-              else
-                url "https://github.com/ringo380/idb-utils/releases/download/v#{version}/inno-v#{version}-x86_64-apple-darwin.tar.gz"
-                sha256 "${MAC_X86}"
-              end
-            elsif OS.linux?
-              if Hardware::CPU.arm?
-                url "https://github.com/ringo380/idb-utils/releases/download/v#{version}/inno-v#{version}-aarch64-unknown-linux-gnu.tar.gz"
-                sha256 "${LINUX_ARM}"
-              else
-                url "https://github.com/ringo380/idb-utils/releases/download/v#{version}/inno-v#{version}-x86_64-unknown-linux-gnu.tar.gz"
-                sha256 "${LINUX_X86}"
-              end
-            end
-
-            def install
-              bin.install "inno"
-            end
-
-            test do
-              assert_match version.to_s, shell_output("#{bin}/inno --version")
-              assert_match "Usage:", shell_output("#{bin}/inno --help")
-            end
-          end
-          EOF
+          cd Formula
+          python3 -c "
+          import re, os
+          v = os.environ['VERSION']
+          shas = {
+              'mac_arm': os.environ['MAC_ARM'],
+              'mac_x86': os.environ['MAC_X86'],
+              'linux_arm': os.environ['LINUX_ARM'],
+              'linux_x86': os.environ['LINUX_X86'],
+          }
+          with open('inno.rb') as f:
+              content = f.read()
+          content = re.sub(r'version \"[^\"]+\"', f'version \"{v}\"', content)
+          # Replace sha256 values in order: mac_arm, mac_x86, linux_arm, linux_x86
+          sha_order = ['mac_arm', 'mac_x86', 'linux_arm', 'linux_x86']
+          idx = [0]
+          def replacer(m):
+              key = sha_order[idx[0]]
+              idx[0] += 1
+              return f'sha256 \"{shas[key]}\"'
+          content = re.sub(r'sha256 \"[a-f0-9]{64}\"', replacer, content)
+          with open('inno.rb', 'w') as f:
+              f.write(content)
+          "
 
       - name: Commit and push
         run: |
