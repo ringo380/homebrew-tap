@@ -1,0 +1,76 @@
+name: Update Formula
+
+on:
+  repository_dispatch:
+    types: [update-formula]
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update inno formula
+        if: github.event.client_payload.formula == 'inno'
+        run: |
+          VERSION="${{ github.event.client_payload.version }}"
+          MAC_ARM="${{ github.event.client_payload.mac_arm_sha256 }}"
+          MAC_X86="${{ github.event.client_payload.mac_x86_sha256 }}"
+          LINUX_ARM="${{ github.event.client_payload.linux_arm_sha256 }}"
+          LINUX_X86="${{ github.event.client_payload.linux_x86_sha256 }}"
+
+          cat > Formula/inno.rb << 'FORMULA'
+          class Inno < Formula
+            desc "InnoDB file analysis toolkit for parsing, validating, and inspecting .ibd files"
+            homepage "https://github.com/ringo380/idb-utils"
+            license "MIT"
+          FORMULA
+
+          # Use sed for dynamic values
+          sed -i "s/FORMULA//" Formula/inno.rb
+          cat > Formula/inno.rb << EOF
+          class Inno < Formula
+            desc "InnoDB file analysis toolkit for parsing, validating, and inspecting .ibd files"
+            homepage "https://github.com/ringo380/idb-utils"
+            license "MIT"
+            version "${VERSION}"
+
+            if OS.mac?
+              if Hardware::CPU.arm?
+                url "https://github.com/ringo380/idb-utils/releases/download/v#{version}/inno-v#{version}-aarch64-apple-darwin.tar.gz"
+                sha256 "${MAC_ARM}"
+              else
+                url "https://github.com/ringo380/idb-utils/releases/download/v#{version}/inno-v#{version}-x86_64-apple-darwin.tar.gz"
+                sha256 "${MAC_X86}"
+              end
+            elsif OS.linux?
+              if Hardware::CPU.arm?
+                url "https://github.com/ringo380/idb-utils/releases/download/v#{version}/inno-v#{version}-aarch64-unknown-linux-gnu.tar.gz"
+                sha256 "${LINUX_ARM}"
+              else
+                url "https://github.com/ringo380/idb-utils/releases/download/v#{version}/inno-v#{version}-x86_64-unknown-linux-gnu.tar.gz"
+                sha256 "${LINUX_X86}"
+              end
+            end
+
+            def install
+              bin.install "inno"
+            end
+
+            test do
+              assert_match version.to_s, shell_output("#{bin}/inno --version")
+              assert_match "Usage:", shell_output("#{bin}/inno --help")
+            end
+          end
+          EOF
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Formula/
+          git diff --staged --quiet || git commit -m "Update ${{ github.event.client_payload.formula }} to ${{ github.event.client_payload.version }}"
+          git push
