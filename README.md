@@ -1,48 +1,30 @@
-# Homebrew Tap for Inferno AI
+# Homebrew Tap
 
-Official Homebrew formulae for [Inferno AI](https://github.com/ringo380/inferno) - an enterprise AI/ML model runner with automatic updates and real-time monitoring.
+Official Homebrew formulae for [ringo380](https://github.com/ringo380) projects.
 
 ## Installation
 
 ```bash
 brew tap ringo380/tap
-brew install inferno-ai
-```
-
-Or install directly:
-
-```bash
-brew install ringo380/tap/inferno-ai
 ```
 
 ## Available Formulae
 
-| Formula | Description |
-|---------|-------------|
-| `inferno-ai` | Enterprise AI/ML model runner |
+| Formula | Description | Install |
+|---------|-------------|---------|
+| `inno` | [InnoDB file analysis toolkit](https://github.com/ringo380/idb-utils) | `brew install ringo380/tap/inno` |
+| `inferno-ai` | [Enterprise AI/ML model runner](https://github.com/ringo380/inferno) | `brew install ringo380/tap/inferno-ai` |
 
-## Usage
-
-After installation:
+## Quick Install
 
 ```bash
-# Check version
-inferno --version
+# inno — InnoDB file analysis toolkit
+brew install ringo380/tap/inno
 
-# List models
-inferno models list
-
-# Start API server
-inferno serve
-
-# Start as background service
-brew services start inferno-ai
+# inferno-ai — Enterprise AI/ML model runner
+brew install ringo380/tap/inferno-ai
 ```
-
-## Documentation
-
-See the [main repository](https://github.com/ringo380/inferno) for full documentation.
 
 ## License
 
-MIT OR Apache-2.0
+MIT
