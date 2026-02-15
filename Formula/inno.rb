@@ -2,23 +2,23 @@ class Inno < Formula
   desc "InnoDB file analysis toolkit for parsing, validating, and inspecting .ibd files"
   homepage "https://github.com/ringo380/idb-utils"
   license "MIT"
-  version "1.4.0"
+  version "2.0.0"
 
   if OS.mac?
     if Hardware::CPU.arm?
       url "https://github.com/ringo380/idb-utils/releases/download/v#{version}/inno-v#{version}-aarch64-apple-darwin.tar.gz"
-      sha256 "b12087259fe734e2c08057b049dc487ee981e923083c72a61727df1412cfdd69"
+      sha256 "ef05ce20916f5b1f1cab216061f173e87d4a8c85ddf119c5409a69e062a73e98"
     else
       url "https://github.com/ringo380/idb-utils/releases/download/v#{version}/inno-v#{version}-x86_64-apple-darwin.tar.gz"
-      sha256 "09c9873a64c9ad93cddf0b48d6492c4d69e959daa1b6ccc4fcbc0cd640226f2d"
+      sha256 "6b041f52ff358ca5b55b1a70031c6d8d932507159fa404e8cf83ec2fd452922b"
     end
   elsif OS.linux?
     if Hardware::CPU.arm?
       url "https://github.com/ringo380/idb-utils/releases/download/v#{version}/inno-v#{version}-aarch64-unknown-linux-gnu.tar.gz"
-      sha256 "ca5190acaaa61d27b97632023618623c5807cf2d396b22fe4c2f39bda930d271"
+      sha256 "48f99c4b8f44a6a78aa8beea274574f1cbec2c70fe85b3c0a04dfef058bfe6cb"
     else
       url "https://github.com/ringo380/idb-utils/releases/download/v#{version}/inno-v#{version}-x86_64-unknown-linux-gnu.tar.gz"
-      sha256 "9c74aff2f17081af69cdafc6fea35c040a6e3d0887ccff340c504f88e173a741"
+      sha256 "e846d06385aa4bad49b7d52eb55e814697ca363192abbc67cb03279ab7e5e7ce"
     end
   end
 
