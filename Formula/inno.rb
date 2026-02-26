@@ -7,18 +7,18 @@ class Inno < Formula
   if OS.mac?
     if Hardware::CPU.arm?
       url "https://github.com/ringo380/idb-utils/releases/download/v#{version}/inno-v#{version}-aarch64-apple-darwin.tar.gz"
-      sha256 "a8c475134f45d3893002e62ffc96a113a5273e8be0efb203e975f866c187ec2a"
+      sha256 "63ab14c615c6bd4b8aa2a669ccbcbedcf837d179223d888a3e1c57c6b9ab67cf"
     else
       url "https://github.com/ringo380/idb-utils/releases/download/v#{version}/inno-v#{version}-x86_64-apple-darwin.tar.gz"
-      sha256 "fbe326019362c82ff169971288a9dcafa0a08a9e56f0fdbf091a1c9dc8ae00d1"
+      sha256 "86ebb3339867eddf7c1a812c14cd1ae52705a972a10326e281a66eef71557b59"
     end
   elsif OS.linux?
     if Hardware::CPU.arm?
       url "https://github.com/ringo380/idb-utils/releases/download/v#{version}/inno-v#{version}-aarch64-unknown-linux-gnu.tar.gz"
-      sha256 "6e7b23ff9718af42316eabcdafa6ea9fa6f7d737ee38908761b164d51df1586b"
+      sha256 "26d61b11a54705fc650efc51bf9308aef00d135f7dff8604b841c33155587ae9"
     else
       url "https://github.com/ringo380/idb-utils/releases/download/v#{version}/inno-v#{version}-x86_64-unknown-linux-gnu.tar.gz"
-      sha256 "50977f352ffdea934a6a58baa914e8bf39a79d79fdc07a3cd551abfb316b4f9c"
+      sha256 "05d7f51bc4a83fdc4908fa3b4692210c0da5655963ee0f9d265a0796d8a499c4"
     end
   end
 
