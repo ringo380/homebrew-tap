@@ -1,14 +1,14 @@
 class Quikgif < Formula
   desc "Record polished GIF demos from the command line"
   homepage "https://quikgif.com"
-  version "1.3.1"
+  version "1.4.0"
   license "MIT"
 
   depends_on :macos
   depends_on macos: :sonoma
 
   url "https://quikgif-releases.ringo380.workers.dev/download"
-  sha256 "e33f32cfbc4e174af42079bcaec57f8b45da0cc864437875dc5639faff0830c8"
+  sha256 "3382d6f2ec2551ddb94f55318bd9b5ff8e0795d07835b832d854faf59cd41395"
 
   def install
     bin.install "quikgif"
