@@ -7,7 +7,7 @@ class Quikgif < Formula
   depends_on :macos
   depends_on macos: :sonoma
 
-  url "https://github.com/ringo380/quikgif/releases/download/v#{version}/quikgif"
+  url "https://quikgif-releases.ringo380.workers.dev/download"
   sha256 "e33f32cfbc4e174af42079bcaec57f8b45da0cc864437875dc5639faff0830c8"
 
   def install
