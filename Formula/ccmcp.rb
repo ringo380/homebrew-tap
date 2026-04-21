@@ -8,6 +8,9 @@ class Ccmcp < Formula
   version "0.2.4"
   license "MIT"
 
+  # This tap has moved. Install with: brew install robworks-code/tap/ccmcp
+  deprecate! date: "2026-04-21", because: "tap moved to robworks-code/tap"
+
   on_macos do
     if Hardware::CPU.intel?
       url "https://github.com/ringo380/ccmcp/releases/download/v0.2.4/ccmcp_0.2.4_darwin_amd64.tar.gz"
