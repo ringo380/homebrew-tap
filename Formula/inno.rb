@@ -4,6 +4,8 @@ class Inno < Formula
   license "MIT"
   version "5.1.0"
 
+  deprecate! date: "2026-05-01", because: "tap moved to robworks-code/tap"
+
   if OS.mac?
     if Hardware::CPU.arm?
       url "https://github.com/ringo380/idb-utils/releases/download/v#{version}/inno-v#{version}-aarch64-apple-darwin.tar.gz"
